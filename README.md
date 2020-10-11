@@ -55,6 +55,8 @@ jobs:
 
     - name: Run rspec
       run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
         bundle exec rspec \
           --no-fail-fast \
           --format RSpec::CheckstyleFormatter \
