@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'lib/rspec/checkstyle_formatter/version'
-
 Gem::Specification.new do |spec|
   spec.name          = 'rspec-checkstyle_formatter'
-  spec.version       = Rspec::CheckstyleFormatter::VERSION
+  spec.version       = '0.1.0'
   spec.authors       = ['astronoka']
-  spec.email         = ['astronoka@users.noreply.github.com']
+  spec.email         = ['skulituniga@gmail.com']
 
   spec.summary       = 'Outputs the result of rspec as a checkstyle format.'
   spec.description   = 'Outputs the result of rspec as a checkstyle format.'
@@ -28,4 +26,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'rspec-core', '~> 3.0'
+
+  spec.add_development_dependency 'pry-byebug'
+  spec.add_development_dependency 'rubocop', '~> 0.93.0'
 end
