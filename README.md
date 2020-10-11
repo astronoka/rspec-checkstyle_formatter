@@ -20,9 +20,9 @@ Or install it yourself as:
 
 ## Usage
 
-'''
+```
 $ bundle exec rspec --format RSpec::CheckstyleFormatter
-'''
+```
 
 ### With reviewdog
 
