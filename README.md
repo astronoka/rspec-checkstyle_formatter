@@ -24,6 +24,64 @@ Or install it yourself as:
 $ bundle exec rspec --format RSpec::CheckstyleFormatter
 '''
 
+### With reviewdog
+
+Post the output of rspec to github using a [reviewdog](https://github.com/reviewdog/reviewdog).
+
+A sample of GithubActions.
+
+```
+name: CI
+
+on: push
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+
+    - name: Restore gems
+      uses: actions/cache@v2
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+
+    - name: Run rspec
+      run: |
+        bundle exec rspec \
+          --no-fail-fast \
+          --format RSpec::CheckstyleFormatter \
+          --out /tmp/rspec_result.xml
+
+    - name: Upload rspec result
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: rspec_result.xml
+        path: /tmp/rspec_result.xml
+
+    - name: Install reviewdog
+      if: always()
+      uses: reviewdog/action-setup@v1
+      with:
+        reviewdog_version: latest
+
+    - name: Report rspec error
+      if: always()
+      env:
+        REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        cat /tmp/rspec_result.xml | reviewdog -name=rspec -f=checkstyle -reporter=github-check -filter-mode=nofilter
+```
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
